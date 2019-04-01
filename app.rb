@@ -31,97 +31,94 @@ class HelloWorldApp < Sinatra::Base
 	# Data shall be considered valid if both the true and false symbols are single characters
     if !true_input.is_a? String or true_input.length != 1
 	  erb :inputerror
-	end
-    if !false_input.is_a? String or false_input.length != 1
+    elsif !false_input.is_a? String or false_input.length != 1
 	  erb :inputerror
-	end
 	# and are distinct from each other (i.e., they shall not be the same character)
-    if false_input.eql? true_input
+    elsif false_input.eql? true_input
 	  erb :inputerror
-	end
 	# and that the size is an integer with a value of 2 or greater.
-	if size_input.to_i < 2 
-	  erb :inputerror
-	end
-	
-	# Data Display Page
-	to_print = "<table style='width:100%'>"
-    to_print = to_print + "<tr>"
-	i = size_input.to_i
-	while i >= 0
-		to_print = to_print + "<th>#{i}</th>"
-		i = i-1;
-	end
-	to_print = to_print + "<th>AND</th><th>OR</th><th>NAND</th><th>NOR</th></tr>"
-
-	# We need to generate an array that finds the split points for each column.
-	split_points = Array.new
-	i = size_input.to_i 
-	half_point = 2**(size_input.to_i+1) /2
-	while i >= 0
-		split_points.push(half_point)
-		half_point = half_point / 2
-		i = i-1;
-	end
-	# We will then have 2 ^ size rows to fill into the table. 
-	row_size = 2**(size_input.to_i+1)
-	i = 0
-	while i < row_size
+	elsif size_input.to_i < 2 
+	  erb :inputerror  
+	else
+		# Data Display Page
+		to_print = "<table style='width:100%'>"
 		to_print = to_print + "<tr>"
-		# Each row will then have # <td> columns that is the size + 1, and, or, nand, and nor.
-		x = 0
-		current_index = i;
-		current_and = true;
-		current_or = false;
-		while x <= size_input.to_i	
-			# Adjust for indexes as the split point gets smaller
-			while(current_index >= (split_points[x]*2))
-				current_index = current_index - split_points[x]*2
+		i = size_input.to_i-1
+		while i >= 0
+			to_print = to_print + "<th>#{i}</th>"
+			i = i-1;
+		end
+		to_print = to_print + "<th>AND</th><th>OR</th><th>NAND</th><th>NOR</th></tr>"
+
+		# We need to generate an array that finds the split points for each column.
+		split_points = Array.new
+		i = size_input.to_i 
+		half_point = 2**(size_input.to_i) /2
+		while i >= 0
+			split_points.push(half_point)
+			half_point = half_point / 2
+			i = i-1;
+		end
+		# We will then have 2 ^ size rows to fill into the table. 
+		row_size = 2**(size_input.to_i)
+		i = 0
+		while i < row_size
+			to_print = to_print + "<tr>"
+			# Each row will then have # <td> columns that is the size + 1, and, or, nand, and nor.
+			x = 0
+			current_index = i;
+			current_and = true;
+			current_or = false;
+			while x < size_input.to_i	
+				# Adjust for indexes as the split point gets smaller
+				while(current_index >= (split_points[x]*2))
+					current_index = current_index - split_points[x]*2
+				end
+				if(current_index < split_points[x])
+					to_print = to_print + "<td align='center'>#{false_input}</td>"
+					current_and = current_and && false;
+					current_or = current_or || false;
+				else
+					to_print = to_print + "<td align='center'>#{true_input}</td>"
+					current_and = current_and && true;
+					current_or = current_or || true;
+				end
+				x = x+1;
 			end
-		    if(current_index < split_points[x])
+			# AND
+			if(current_and == true)
+				to_print = to_print + "<td align='center'>#{true_input}</td>"
+			else
 				to_print = to_print + "<td align='center'>#{false_input}</td>"
-				current_and = current_and && false;
-				current_or = current_or || false;
+			end
+			# OR
+			if(current_or == true)
+				to_print = to_print + "<td align='center'>#{true_input}</td>"
+			else
+				to_print = to_print + "<td align='center'>#{false_input}</td>"
+			end
+			# NAND
+			if(current_and == true)
+				to_print = to_print + "<td align='center'>#{false_input}</td>"
 			else
 				to_print = to_print + "<td align='center'>#{true_input}</td>"
-				current_and = current_and && true;
-				current_or = current_or || true;
 			end
-			x = x+1;
+			# NOR
+			if(current_or == true)
+				to_print = to_print + "<td align='center'>#{false_input}</td>"
+			else
+				to_print = to_print + "<td align='center'>#{true_input}</td>"
+			end
+			
+			# Close our row.
+			to_print = to_print + "</tr>"
+			i = i+1;
 		end
-		# AND
-		if(current_and == true)
-			to_print = to_print + "<td align='center'>#{true_input}</td>"
-		else
-			to_print = to_print + "<td align='center'>#{false_input}</td>"
-		end
-		# OR
-		if(current_or == true)
-			to_print = to_print + "<td align='center'>#{true_input}</td>"
-		else
-			to_print = to_print + "<td align='center'>#{false_input}</td>"
-		end
-		# NAND
-		if(current_and == true)
-			to_print = to_print + "<td align='center'>#{false_input}</td>"
-		else
-			to_print = to_print + "<td align='center'>#{true_input}</td>"
-		end
-		# NOR
-		if(current_or == true)
-			to_print = to_print + "<td align='center'>#{false_input}</td>"
-		else
-			to_print = to_print + "<td align='center'>#{true_input}</td>"
-		end
-		
-		# Close our row.
-		to_print = to_print + "</tr>"
-		i = i+1;
+		# Add our return link
+		to_print = to_print + "</table><br><a href='/' name='return'>Back Home</a>"
+		# Print our Dynamic HTML
+		"#{to_print}"
 	end
-	# Add our return link
-	to_print = to_print + "</table><br><a href='/'>Back Home</a>"
-	# Print our Dynamic HTML
-	"#{to_print}"
 end
  # If a user goes to a URL other than one specified (e.g., "http://localhost:4567/hotdog"), the system shall display a page stating "ERROR" (in an h1 tag),
  # as well as the text, "Invalid address.", along with a 404 error code.

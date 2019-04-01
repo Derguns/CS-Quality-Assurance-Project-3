@@ -1,7 +1,7 @@
 <form method="POST" action="table">
-  <p>True symbol: <input type="text" name="true"></p>
-  <p>False symbol: <input type="text" name="false"></p>
-  <p>Size (2^x): <input type="text" name="size"></p>
-  <input type="submit" value="Show truth table">
+  <p><label for="true" id="true_label">True symbol:</label><input type="text" name="true"></p>
+  <p><label for="false" id="false_label">False symbol:</label><input type="text" name="false"></p>
+  <p><label for="size" id="size_label">Size (2^x):</label><input type="text" name="size"></p>
+  <input type="submit" name="submit" id="submit_button" value="Show truth table">
 </form>
-<a href='/'>Reload page</a>
+<a href='/' name="return">Reload page</a>
