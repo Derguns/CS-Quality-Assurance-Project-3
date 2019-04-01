@@ -19,6 +19,7 @@
     
 Tests:
   Index page has all inputs specified and labelled correctly.
+  Index page inputs are editable.
   There is a link to the main page on the index, table, error, and input_error pages at the bottom.
   The input error page has error in an H1 tag, invalid parameters, and the rules for the data to specifications.
   Data is invalid if true symbol is not a single character.
