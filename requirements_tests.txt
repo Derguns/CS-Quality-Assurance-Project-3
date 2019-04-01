@@ -29,6 +29,7 @@ Tests:
   Truth table is constructed using the specified true / false symbols.
   Truth table constructed with the correct amount of headers, starting from the highest number to 0.
   Truth table contains and, or, nand, and nor columns.
+  Truth table row size is 2 ^ x.
   Truth table properly generates the values for the and, or, nand, nor columns.
   Truth table properly generates the values for the table bits.
   Truth table uses default values when no values are entered. (T, F, and 3)
