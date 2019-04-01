@@ -47,8 +47,12 @@ Tests:
   Truth table row size is 2 ^ (x+1).
     Done
   Truth table properly generates the values for the and, or, nand, nor columns.
-  Truth table properly generates the values for the table bits.
+    And Done.
+    Or Done.
+    Nand Done.
+    Nor Done.
   Truth table uses default values when no values are entered. (T, F, and 3)
+    Done.
   Any URL other than the default has a 404 with error page to specifications.
-  Truth table properly generates values with large (> 100 ) size.
+    Done.
   
